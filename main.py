@@ -1,49 +1,37 @@
-# bot.py
-import os
-import random
-
 import discord
-from dotenv import load_dotenv
-from discord.ext import tasks
+import dotenv
 from discord.ext import commands
+import random
+import os
+from dotenv import load_dotenv
 
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
 
-client = discord.Client()
+TOKEN = os.getenv("TOKEN")
 
-print(TOKEN)
-@client.event
+#intents are like permissions, required as of 2022
+intents = discord.Intents.default()
+intents.members = True
+intents.messages = True
+
+bot = commands.Bot(command_prefix='?', intents=intents)
+
+@bot.event
 async def on_ready():
-    print(f'{client.user.name} has connected to Discord!')
+    print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print('------')
 
 #bot status
-@client.event
-async def on_ready():
-  activity = discord.Game(name="with a lamp")
-  await client.change_presence(status=discord.Status.online, activity=activity)
+# @bot.event
+# async def on_ready():
+#   activity = discord.Game(name="with a lamp")
+#   await bot.change_presence(status=discord.Status.online, activity=activity)
 
-#prviate message to new members
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to my Discord server!'
-    )
-
-
-bot = commands.Bot(command_prefix="$")
-@bot.command()
-async def ping(ctx):
-	await ctx.channel.send("pong")
-async def stats(ctx):
-    await ctx.channel.send("pong")
-
-
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user: #if the message is from the bot itself, ignore it
+    if message.author == bot.user: #if the message is from the bot itself, ignore it
         return
+
 
     light = [
         'GIVE LAMP!',
@@ -55,6 +43,8 @@ async def on_message(message):
 
     if "light" in message.content:
         response = random.choice(light)
-        await message.channel.send(response)    
+        await message.channel.send(response)  
+
+
 
 bot.run(TOKEN)
