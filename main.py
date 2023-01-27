@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
+from discord import FFmpegPCMAudio
 import random
 import os
 from dotenv import load_dotenv
+from time import sleep
 
 load_dotenv()
 
@@ -40,33 +42,42 @@ async def on_message(message):
         await message.channel.send(response)  
     await bot.process_commands(message)
 
-@bot.command()
-async def join(ctx):
-    #if user who is running command in voice channel then it will run the following command else do soemthing else
-    if(ctx.author.voice):
-        channel = ctx.message.author.voice.channel
-        await channel.connect()
-    else:
-        await ctx.send("NOT IN VOICE CHANNEL YA BUM")
+# @bot.command()
+# async def join(ctx):
+#     #if user who is running command in voice channel then it will run the following command else do soemthing else
+#     if(ctx.author.voice):
+#         channel = ctx.message.author.voice.channel
+#         voice = await channel.connect()
+#         source = FFmpegPCMAudio('./sounds/crusher.wav')
+#         player = voice.play(source)
+#     else:
+#         await ctx.send("NOT IN VOICE CHANNEL YA BUM")
 
-@bot.command()
-async def leave(ctx):
-    if(ctx.voice_client):
-        await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
-        await ctx.send("Voice channel lef")
-    else:
-        await ctx.send("Not in voice channel")
+# @bot.command()
+# async def leave(ctx):
+#     if(ctx.voice_client):
+#         await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
+#         await ctx.send("Voice channel lef")
+#     else:
+#         await ctx.send("Not in voice channel")
 
 #enables custom help command
 bot.remove_command("help")
 @bot.command()
 async def help(ctx):
-    await ctx.send("Commands are ```TEST```")
+    await ctx.send("Commands are ```sound```")
+
 
 @bot.command()
-async def ping(ctx):
-	await ctx.channel.send("pong")
-async def stats(ctx):
-    await ctx.channel.send("pong")
+async def sound(ctx):
+    if(ctx.author.voice):
+        channel = ctx.message.author.voice.channel
+        voice = await channel.connect()
+        source = FFmpegPCMAudio('./sounds/crusher.wav')
+        player = voice.play(source)    
+        while voice.is_playing():
+            continue
+        await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
+
 
 bot.run(TOKEN)
