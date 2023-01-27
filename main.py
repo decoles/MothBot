@@ -1,5 +1,4 @@
 import discord
-import dotenv
 from discord.ext import commands
 import random
 import os
@@ -8,24 +7,19 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
-
+#ctx allows communications and properties
 #intents are like permissions, required as of 2022
-intents = discord.Intents.default()
-intents.members = True
-intents.messages = True
 
-bot = commands.Bot(command_prefix='?', intents=intents)
+bot = commands.Bot(command_prefix='.', intents=discord.Intents.all()) #use all features
 
 @bot.event
 async def on_ready():
+    activity = discord.Game(name="with a lamp")
+    await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
 
-#bot status
-# @bot.event
-# async def on_ready():
-#   activity = discord.Game(name="with a lamp")
-#   await bot.change_presence(status=discord.Status.online, activity=activity)
+
 
 @bot.event
 async def on_message(message):
@@ -44,7 +38,35 @@ async def on_message(message):
     if "light" in message.content:
         response = random.choice(light)
         await message.channel.send(response)  
+    await bot.process_commands(message)
 
+@bot.command()
+async def join(ctx):
+    #if user who is running command in voice channel then it will run the following command else do soemthing else
+    if(ctx.author.voice):
+        channel = ctx.message.author.voice.channel
+        await channel.connect()
+    else:
+        await ctx.send("NOT IN VOICE CHANNEL YA BUM")
 
+@bot.command()
+async def leave(ctx):
+    if(ctx.voice_client):
+        await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
+        await ctx.send("Voice channel lef")
+    else:
+        await ctx.send("Not in voice channel")
+
+#enables custom help command
+bot.remove_command("help")
+@bot.command()
+async def help(ctx):
+    await ctx.send("Commands are ```TEST```")
+
+@bot.command()
+async def ping(ctx):
+	await ctx.channel.send("pong")
+async def stats(ctx):
+    await ctx.channel.send("pong")
 
 bot.run(TOKEN)
