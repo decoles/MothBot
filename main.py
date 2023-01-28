@@ -5,6 +5,7 @@ import random
 import os
 from dotenv import load_dotenv
 import asyncio
+import botCommands #commands.py
 
 
 load_dotenv()
@@ -41,52 +42,22 @@ async def on_message(message):
 
 @bot.command()
 async def stop(ctx):
-    voice = None
-    voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
-    if voice.is_playing():
-        voice.stop()
-    else:
-        await ctx.send("Nothing is playing")
-    await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
-    
-
-def soundList():
-    sounds = []
-    for file in os.listdir("./sounds"):
-        sounds.append(file)
-    return sounds
+    await botCommands.stop(ctx, bot)
 
 #enables custom help command
 bot.remove_command("help")
 @bot.command()
 async def help(ctx):
-    await ctx.send("```sounds:\n .sounds - list all sounds\n .play <sound> - play sound\n .stop - stop playing sound\n\nother:\n .help - list all commands\n .ping - pong!```")
+    await botCommands.help(ctx)
 
 @bot.command()
 async def sounds(ctx):
-    await ctx.send("```Sounds:\n " + "\n ".join(soundList()) + "```")
+    await botCommands.sounds(ctx)
 
 @bot.command()
 async def play(ctx, *arg):
-    if arg.__len__() == 0:
-        await ctx.send("Please specify a sound")
-        return
-    elif arg[0] not in soundList():
-        await ctx.send("Sound not found")
-        return
-    voice = None
-    player = None
-    if(ctx.author.voice):
-        channel = ctx.message.author.voice.channel
-        voice = await channel.connect()
-        #source = FFmpegPCMAudio('./sounds/nut.mp3')
-        source = FFmpegPCMAudio('./sounds/' + arg[0])
-        player = voice.play(source)    
-        while voice.is_playing():
-            await asyncio.sleep(1) #wait for sound to finish
-        await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
-    else:
-        await ctx.send("Not in voice channel")
+    await botCommands.play(ctx, *arg)
+
 
 
 bot.run(TOKEN)
