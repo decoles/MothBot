@@ -6,6 +6,8 @@ import os
 from dotenv import load_dotenv
 import asyncio
 import yt_dlp
+from mcstatus import JavaServer
+
 
 def soundList(): #get list of sounds from folder
     sounds = []
@@ -69,3 +71,10 @@ async def play(ctx, *arg):
                 await ctx.send("Not in voice channel")
     except:
         await ctx.send("Somethings already playing")
+
+async def ping(ctx, bot):
+    await ctx.send("Checking Servers...")
+    server = JavaServer.lookup("mc.davienetwork.com:25565")
+    status = server.status()
+    print(f"The Minecraft server has {status.players.online} players and replied in {status.latency} ms")
+    await ctx.send("Pong! " + str(round(bot.latency * 1000)) + "ms")

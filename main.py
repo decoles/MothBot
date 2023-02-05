@@ -63,4 +63,9 @@ async def play(ctx, *arg):
 async def detect(ctx, arg):
     await detection.detect(ctx, arg)
 
+@bot.command()
+async def ping(ctx, bot):
+    await botCommands.ping(ctx, bot)
+
+
 bot.run(TOKEN)
