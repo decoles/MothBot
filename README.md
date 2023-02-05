@@ -1,5 +1,5 @@
 # MothBot
-Open Source Python Bot that shows how to use tensorflow, message responses, sounds, and Youtube audio streaming.
+Open Source Python Bot that shows how to use object detection, message responses, sounds, and Youtube audio streaming.
 
 ## Running Locally
 After cloning repository to your machine:
