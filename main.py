@@ -64,7 +64,7 @@ async def detect(ctx, arg):
     await detection.detect(ctx, arg)
 
 @bot.command()
-async def ping(ctx, bot):
+async def ping(ctx):
     await botCommands.ping(ctx, bot)
 
 

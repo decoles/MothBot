@@ -8,6 +8,7 @@ import asyncio
 import yt_dlp
 from mcstatus import JavaServer
 
+load_dotenv()
 
 def soundList(): #get list of sounds from folder
     sounds = []
@@ -27,7 +28,7 @@ async def stop(ctx, bot):
     
 #enables custom help command
 async def help(ctx):
-    await ctx.send("```sounds:\n .sounds - list all sounds\n .play <sound> - play sound\n .stop - stop playing sound\n\nother:\n .help - list all commands\n .ping - pong!```")
+    await ctx.send("```detection:\n .detect <link> - identifies object in image\nsounds:\n .sounds - list all sounds\n .play <sound> - play sound\n .stop - stop playing sound\n\nother:\n .help - list all commands\n .ping - ping available servers!```")
 
 async def sounds(ctx):
     await ctx.send("```Sounds:\n " + "\n ".join(soundList()) + "```")
@@ -74,7 +75,12 @@ async def play(ctx, *arg):
 
 async def ping(ctx, bot):
     await ctx.send("Checking Servers...")
-    server = JavaServer.lookup("mc.davienetwork.com:25565")
-    status = server.status()
-    print(f"The Minecraft server has {status.players.online} players and replied in {status.latency} ms")
-    await ctx.send("Pong! " + str(round(bot.latency * 1000)) + "ms")
+    try:
+        server = JavaServer.lookup(os.getenv("MINECRAFT_SERVER"))
+        status = server.status()
+        await ctx.send(f"```The Minecraft server has {status.players.online} players and replied in {round(status.latency*100)} ms\n\nThe bot latency is " + str(round(bot.latency * 1000)) + "ms```")
+    except:
+        await ctx.send("Minecraft server is offline")
+        await ctx.send("```The bot latency is " + str(round(bot.latency * 1000)) + "ms```")
+        
+    
