@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import asyncio
 import botCommands #commands.py
+import detection #detection.py
 
 
 load_dotenv()
@@ -57,5 +58,9 @@ async def sounds(ctx):
 @bot.command()
 async def play(ctx, *arg):
     await botCommands.play(ctx, *arg)
+
+@bot.command()
+async def detect(ctx, arg):
+    await detection.detect(ctx, arg)
 
 bot.run(TOKEN)
