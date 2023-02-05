@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
+from discord.ext import tasks
 import random
 import os
 from dotenv import load_dotenv
@@ -24,12 +25,18 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
+    looptest.start()
+    
 
 @bot.event
 async def on_message(message):
     if message.author == bot.user: #if the message is from the bot itself, ignore it
         return
     await userResponse.ReadMessage(message, bot)
+
+@tasks.loop(seconds=10)
+async def looptest():
+    print("Changing status")
 
 @bot.command()
 async def stop(ctx):
