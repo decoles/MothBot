@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import asyncio
 import botCommands #commands.py
 import detection #detection.py
-
+import userResponse #userResponses.py
 
 load_dotenv()
 
@@ -28,18 +28,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user: #if the message is from the bot itself, ignore it
         return
-    light = [
-        'GIVE LAMP!',
-        'SMOTHER ME WITH LIGHT BULB!',
-    ]
-
-    if "kyle" in message.content.lower():
-        await message.channel.send("SHUDUP BRIAN")
-
-    if "light" in message.content:
-        response = random.choice(light)
-        await message.channel.send(response)  
-    await bot.process_commands(message)
+    await userResponse.ReadMessage(message, bot)
 
 @bot.command()
 async def stop(ctx):
@@ -66,6 +55,5 @@ async def detect(ctx, arg):
 @bot.command()
 async def ping(ctx):
     await botCommands.ping(ctx, bot)
-
 
 bot.run(TOKEN)
