@@ -8,6 +8,7 @@ import asyncio
 import botCommands #commands.py
 import detection #detection.py
 import userResponse #userResponses.py
+import trackstats #trackstats.py
 
 load_dotenv()
 
@@ -55,5 +56,9 @@ async def detect(ctx, arg):
 @bot.command()
 async def ping(ctx):
     await botCommands.ping(ctx, bot)
+
+@bot.command()
+async def dbtest(ctx):
+    await trackstats.dbtest(ctx, bot)
 
 bot.run(TOKEN)
