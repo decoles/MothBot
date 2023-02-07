@@ -1,4 +1,4 @@
-[![Python 3.8](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)](https://img.shields.io/pypi/pyversions/discord.py)
 # MothBot
 Open Source Python Bot that shows how to use object detection, message responses, sounds, and Youtube audio streaming.
 
