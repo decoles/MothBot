@@ -25,6 +25,10 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
+    isDbExist = os.path.exists("trackstats.db")
+    isSoundExist = os.path.exists("sounds")
+    if not isSoundExist: #if sounds folder doesn't exist, create it
+        os.mkdir("sounds")
     looptest.start()
     
 

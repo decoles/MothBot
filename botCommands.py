@@ -35,10 +35,10 @@ async def sounds(ctx):
 
 async def play(ctx, *arg):
     try:
-        if arg.__len__() == 0 or arg.__len__() > 1:
+        if arg.__len__() == 0 or arg.__len__() > 1: #allows for some modularity
             await ctx.send("Please specify a sound or youtube link")
             return
-        elif arg.__len__() == 1 and arg[0].startswith("https://www.youtube.com/watch?v="):
+        elif arg.__len__() == 1 and (arg[0].startswith("https://www.youtube.com/watch?v=") or arg[0].startswith("https://youtu.be") or arg[0].startswith("https://m.youtube.com")):
             if(ctx.author.voice): #if user is in voice channel
                 channel = ctx.message.author.voice.channel #get Message Sender Channel. When you want it to join without a seperat function.
                 voice = await channel.connect() #same applies to this
