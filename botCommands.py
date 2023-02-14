@@ -86,7 +86,7 @@ async def ping(ctx, bot):
         
 async def mock(ctx):
     channel = ctx.channel
-    history = [message async for message in channel.history(limit=2)]
+    history = [message async for message in channel.history(limit=2)] #get last 2 messages
     content = history[1].content
     for i in range(len(content)):
         if i % 2 == 0:

@@ -72,7 +72,7 @@ async def ping(ctx):
 
 @bot.command()
 async def mock(ctx):
-    await botCommands.mock(ctx, bot)
+    await botCommands.mock(ctx)
 
 
 
