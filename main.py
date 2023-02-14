@@ -26,11 +26,11 @@ async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
     isSoundExist = os.path.exists("sounds")
-    await trackstats.initialize()#initialize database if it dosent exist and create tables
+    await trackstats.initialize(bot)#initialize database if it dosent exist and create tables
 
     if not isSoundExist: #if sounds folder doesn't exist, create it
         os.mkdir("sounds")
-    looptest.start()
+    recordUserStatus.start()
     
 
 @bot.event
@@ -41,8 +41,8 @@ async def on_message(message):
     await trackstats.readMessages(message, bot)
 
 @tasks.loop(seconds=60)
-async def looptest():
-    print("Changing status")
+async def recordUserStatus():
+    await trackstats.recordUserStatus(bot)
 
 @bot.command()
 async def stop(ctx):
