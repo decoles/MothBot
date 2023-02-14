@@ -3,6 +3,7 @@ import discord
 from datetime import datetime
 from datetime import date
 
+#creates all the tables and database iuf it dosent exist
 async def initialize(bot):
     con = sqlite3.connect('mothbot.db')#creates a database file if it doesn't exist, connects to it if it does
     cur = con.cursor() #lets us execute commands
@@ -45,20 +46,11 @@ async def readMessages(message, bot):
     today = date.today()
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
-
     con = sqlite3.connect('mothbot.db')#creates a database file if it doesn't exist, connects to it if it does
-
     cur = con.cursor() #lets us execute commands
     cur.execute('''INSERT INTO messageStats (messageId, date, time, guildId, channelId, channelName, authorId, authorName, message) VALUES (?,?,?,?,?,?,?,?,?)''' ,
      (message.id ,today, current_time, message.guild.id, message.channel.id, message.channel.name, message.author.id, message.author.name, message.content))
-
     con.commit()
-
-    for row in cur.execute('''SELECT * FROM guilds'''):
-        print(row)
-    for row in cur.execute('''SELECT * FROM messageStats'''):
-        print(row)
-
     con.close()
 
 #gets all users in the server and records their status i.e online, offline, idle, dnd

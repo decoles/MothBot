@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
+from discord.ext import tasks
 import random
 import os
 from dotenv import load_dotenv
@@ -83,4 +84,13 @@ async def ping(ctx, bot):
         await ctx.send("Minecraft server is offline")
         await ctx.send("```The bot latency is " + str(round(bot.latency * 1000)) + "ms```")
         
+async def mock(ctx):
+    channel = ctx.channel
+    history = [message async for message in channel.history(limit=2)]
+    content = history[1].content
+    for i in range(len(content)):
+        if i % 2 == 0:
+            content = content[:i] + content[i].upper() + content[i+1:]
+    await channel.send(content)
     
+

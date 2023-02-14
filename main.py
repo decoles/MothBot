@@ -70,4 +70,10 @@ async def detect(ctx, arg):
 async def ping(ctx):
     await botCommands.ping(ctx, bot)
 
+@bot.command()
+async def mock(ctx):
+    await botCommands.mock(ctx, bot)
+
+
+
 bot.run(TOKEN)
