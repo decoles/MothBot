@@ -74,6 +74,8 @@ async def ping(ctx):
 async def mock(ctx):
     await botCommands.mock(ctx)
 
-
+@bot.command()
+async def generate(ctx, *, arg):
+    await botCommands.generate(ctx,arg)
 
 bot.run(TOKEN)
