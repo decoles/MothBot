@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 from discord.ext import tasks
-import random
 import os
 from dotenv import load_dotenv
 import asyncio
@@ -10,6 +9,7 @@ import botCommands #commands.py
 import detection #detection.py
 import userResponse #userResponses.py
 import trackstats #trackstats.py
+import sqlite3
 
 load_dotenv()
 
@@ -25,8 +25,9 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
-    isDbExist = os.path.exists("trackstats.db")
     isSoundExist = os.path.exists("sounds")
+    await trackstats.initialize()#initialize database if it dosent exist and create tables
+
     if not isSoundExist: #if sounds folder doesn't exist, create it
         os.mkdir("sounds")
     looptest.start()
@@ -37,8 +38,9 @@ async def on_message(message):
     if message.author == bot.user: #if the message is from the bot itself, ignore it
         return
     await userResponse.ReadMessage(message, bot)
+    await trackstats.readMessages(message, bot)
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=60)
 async def looptest():
     print("Changing status")
 
@@ -56,20 +58,16 @@ async def help(ctx):
 async def sounds(ctx):
     await botCommands.sounds(ctx)
 
-@bot.command()
+@bot.command() #plays sound or youtube link
 async def play(ctx, *arg):
     await botCommands.play(ctx, *arg)
 
-@bot.command()
+@bot.command() #detects a given link TODO: allow for image uploads
 async def detect(ctx, arg):
     await detection.detect(ctx, arg)
 
-@bot.command()
+@bot.command() #pings given servers
 async def ping(ctx):
     await botCommands.ping(ctx, bot)
-
-@bot.command()
-async def dbtest(ctx):
-    await trackstats.dbtest(ctx, bot)
 
 bot.run(TOKEN)
