@@ -4,6 +4,7 @@
 Open Source Python Bot that shows how to use object detection, message responses, sounds, and Youtube audio streaming.
 
 ## Features
+TODO
 
 ## Setup
 TODO 
