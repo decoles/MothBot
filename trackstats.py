@@ -34,10 +34,30 @@ async def initialize(bot):
             currentStatus text NOT NULL,
             currentActivity text NOT NULL)
     ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS userLevel (
+            userId integer PRIMARY KEY NOT NULL,
+            userName text NOT NULL,
+            guildId integer NOT NULL,
+            xp integer NOT NULL)
+    ''')
+    #give all users in every server 0 xp
+    
+    for guild in bot.guilds:
+        for member in guild.members:
+            try: # if the user is already in the database, it will throw an error
+                cur.execute('''INSERT INTO userLevel (userId, userName, guildId, xp) VALUES (?,?,?,?)''' , (member.id, member.name, guild.id, 0))
+            except:
+                #do nothing
+                pass
+
+
     try:
         cur.execute('''INSERT INTO guilds (guildId, guildName) VALUES (?,?)''' , (bot.guilds[0].id, bot.guilds[0].name))
+        #TODO: add logging here
     except:
-        print("Guild already exists")
+        #print(bot.guilds[0].name + " already exists in the database")
+        pass
     con.commit()
     con.close()
 
@@ -60,5 +80,20 @@ async def recordUserStatus(bot):
     for guild in bot.guilds:
         for member in guild.members:
             cur.execute('''INSERT INTO userStats (userId, userName, guildId, currentStatus, currentActivity) VALUES (?,?,?,?,?)''' , (member.id, member.name, guild.id, str(member.status), str(member.activity)))
+    con.commit()
+    con.close()
+
+async def modifyUserLevel(userId,xp):
+    con = sqlite3.connect('mothbot.db')#creates a database file if it doesn't exist, connects to it if it does
+    cur = con.cursor() #lets us execute commands
+    #check if userxp is 0
+    cur.execute('''SELECT xp FROM userLevel WHERE userId = ?''', (userId,))
+    retrievedXp = cur.fetchone()[0] + xp
+    #verif that xp is not negative
+    if retrievedXp < 0:
+        retrievedXp = 0
+    else:
+        retrievedXp = retrievedXp + xp
+    cur.execute('''UPDATE userLevel SET xp = ? WHERE userId = ?''', (retrievedXp, userId))
     con.commit()
     con.close()

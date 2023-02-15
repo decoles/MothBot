@@ -13,6 +13,7 @@ from craiyon import Craiyon
 import time
 from io import BytesIO
 from PIL import Image
+import trackstats
 
 load_dotenv()
 
@@ -104,7 +105,7 @@ async def generate(ctx, arg):
     result = await generator.async_generate(arg)
     count = 0
     for i in result.images:
-        count += 1
+        count += 1 #incremnts image name
         byt = BytesIO()
         image = Image.open(BytesIO(base64.decodebytes(i.encode("utf-8"))))
         image.save(byt, 'PNG')
@@ -113,4 +114,24 @@ async def generate(ctx, arg):
 
     #await result.async_save_images()
     
+async def games(ctx, bot, *arg):
 
+    print(arg.__len__())
+    if arg.__len__() == 0:
+        await ctx.send("```Games:\n .games - list all games\n .games <game> - play a game```")
+    elif arg[0] == "gamble" and arg.__len__() == 2:
+        if arg[1].isnumeric():
+            await ctx.send("Rolling...")
+            await asyncio.sleep(2)
+            amount = random.randint(1, 10)
+            await ctx.send("You rolled a " + str(amount))
+            if amount == 1:
+                await ctx.send("You lost 100 social credit")
+                await trackstats.modifyUserLevel(ctx.author.id, )
+            else:
+                await ctx.send("You won " + str(amount) + " social credit")
+                await trackstats.modifyUserLevel(ctx.author.id, amount)
+
+
+        else:
+            await ctx.send("Please enter a valid amount")

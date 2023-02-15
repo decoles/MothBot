@@ -78,4 +78,8 @@ async def mock(ctx):
 async def generate(ctx, *, arg):
     await botCommands.generate(ctx,arg)
 
+@bot.command()
+async def games(ctx, *arg):
+    await botCommands.games(ctx, bot, *arg)
+
 bot.run(TOKEN)
