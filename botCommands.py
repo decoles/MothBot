@@ -17,12 +17,6 @@ import trackstats
 
 load_dotenv()
 
-def soundList(): #get list of sounds from folder
-    sounds = []
-    for file in os.listdir("./sounds"):
-        sounds.append(file)
-    return sounds
-
 async def stop(ctx, bot):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     try:
@@ -37,13 +31,10 @@ async def stop(ctx, bot):
 async def help(ctx):
     await ctx.send("```detection:\n .detect <link> - identifies object in image\nsounds:\n .sounds - list all sounds\n .play <sound> - play sound\n .stop - stop playing sound\n\nother:\n .help - list all commands\n .ping - ping available servers!```")
 
-async def sounds(ctx):
-    await ctx.send("```Sounds:\n " + "\n ".join(soundList()) + "```")
-
 async def play(ctx, *arg):
     try:
         if arg.__len__() == 0 or arg.__len__() > 1: #allows for some modularity
-            await ctx.send("Please specify a sound or youtube link")
+            await ctx.send("Please specify a youtube link")
             return
         elif arg.__len__() == 1 and (arg[0].startswith("https://www.youtube.com/watch?v=") or arg[0].startswith("https://youtu.be") or arg[0].startswith("https://m.youtube.com")):
             if(ctx.author.voice): #if user is in voice channel
@@ -58,23 +49,6 @@ async def play(ctx, *arg):
                 while voice.is_playing():
                     await asyncio.sleep(1) #wait for sound to finish
                 await ctx.voice_client.disconnect() #Go to server then go to voice client and remove it
-            else:
-                await ctx.send("Not in voice channel")
-
-        elif arg[0] not in soundList():
-            await ctx.send("Enter a valid sound or youtube link")
-            return
-        else:
-            voice = None
-            player = None
-            if(ctx.author.voice): #if user is in voice channel
-                channel = ctx.message.author.voice.channel
-                voice = await channel.connect()
-                source = FFmpegPCMAudio('./sounds/' + arg[0])
-                player = voice.play(source)    
-                while voice.is_playing():
-                    await asyncio.sleep(1) #wait for sound to finish
-                await ctx.guild.voice_client.disconnect() #Go to server then go to voice client and remove it
             else:
                 await ctx.send("Not in voice channel")
     except:
