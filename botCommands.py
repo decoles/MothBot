@@ -89,7 +89,6 @@ async def generate(ctx, arg):
     #await result.async_save_images()
     
 async def games(ctx, bot, *arg):
-
     print(arg.__len__())
     if arg.__len__() == 0:
         await ctx.send("```Games:\n .games - list all games\n .games <game> - play a game```")
@@ -105,7 +104,5 @@ async def games(ctx, bot, *arg):
             else:
                 await ctx.send("You won " + str(amount) + " social credit")
                 await trackstats.modifyUserLevel(ctx.author.id, amount)
-
-
         else:
             await ctx.send("Please enter a valid amount")

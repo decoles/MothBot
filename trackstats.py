@@ -50,8 +50,6 @@ async def initialize(bot):
             except:
                 #do nothing
                 pass
-
-
     try:
         cur.execute('''INSERT INTO guilds (guildId, guildName) VALUES (?,?)''' , (bot.guilds[0].id, bot.guilds[0].name))
         #TODO: add logging here
