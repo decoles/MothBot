@@ -59,6 +59,7 @@ async def initialize(bot):
     con.commit()
     con.close()
 
+
 async def readMessages(message, bot):
     #get only current date
     today = date.today()
