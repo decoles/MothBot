@@ -14,6 +14,14 @@ import time
 from io import BytesIO
 from PIL import Image
 
+#create a queue for songs
+#add a skip command
+#add a queue command
+#add a pause command
+#add a resume command
+
+
+
 async def stop(ctx, bot):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     try:
@@ -43,3 +51,6 @@ async def play(ctx, *arg):
             await ctx.voice_client.disconnect() #Go to server then go to voice client and remove it
         else:
             await ctx.send("Not in voice channel")
+
+async def addToQueue():
+    pass
