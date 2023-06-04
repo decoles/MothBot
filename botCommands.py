@@ -17,40 +17,10 @@ import trackstats
 
 load_dotenv()
 
-async def stop(ctx, bot):
-    voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
-    try:
-        if voice.is_playing():
-            voice.stop()
-        else:
-            await ctx.send("Nothing is playing")
-    except:
-        await ctx.send("Nothing is playing")
-    
 #enables custom help command
 async def help(ctx):
     with open("config/help.txt", "r") as f:
         await ctx.send(f.read())
-
-async def play(ctx, *arg):
-    if arg.__len__() == 0 or arg.__len__() > 1: #allows for some modularity
-        await ctx.send("Please specify a youtube link")
-        return
-    elif arg.__len__() == 1 and (arg[0].startswith("https://www.youtube.com/watch?v=") or arg[0].startswith("https://youtu.be") or arg[0].startswith("https://m.youtube.com")):
-        if(ctx.author.voice): #if user is in voice channel
-            channel = ctx.message.author.voice.channel #get Message Sender Channel. When you want it to join without a seperat function.
-            voice = await channel.connect() #same applies to this
-            url = arg[0]
-            ffmpeg_options = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-            ydl_opts = {'format': 'bestaudio/best', 'noplaylist':'True'}
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                song_info = ydl.extract_info(url, download=False)
-            ctx.voice_client.play(discord.FFmpegOpusAudio(song_info["url"], **ffmpeg_options)) 
-            while voice.is_playing():
-                await asyncio.sleep(1) #wait for sound to finish
-            await ctx.voice_client.disconnect() #Go to server then go to voice client and remove it
-        else:
-            await ctx.send("Not in voice channel")
 
 async def ping(ctx, bot):
     await ctx.send("Checking Servers...")
@@ -71,7 +41,14 @@ async def mock(ctx):
             content = content[:i] + content[i].upper() + content[i+1:]
     await channel.send(content)
 
-async def generate(ctx, arg):
+#generates and image using the craiyon api and sends it to the chat
+async def generate(ctx, *arg):
+    if arg.__len__ == 0:
+        await ctx.send("Please provide a link to an image")
+        return
+    elif arg.__len__() > 1:
+        await ctx.send("Please provide only one argument")
+        return
     await ctx.send("Generating image... ETA: 50 seconds")
     generator = Craiyon() # Instantiates the api wrapper
     result = await generator.async_generate(arg)

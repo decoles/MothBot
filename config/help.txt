@@ -4,8 +4,12 @@
 Audio:
     .play <youtube link> - play sound
     .stop - stop playing current video 
-    .help - list all commands
-    ping - ping available servers
+
+Games:
+    .8ball <question> - ask the magic 8ball a question
+    .rps <rock/paper/scissors> - play rock paper scissors
+    .roll <number> - roll a dice
+    .flip - flip a coin
     
 Other:
     .help - list all commands

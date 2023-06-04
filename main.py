@@ -10,6 +10,7 @@ import detection #detection.py
 import userResponse #userResponses.py
 import trackstats #trackstats.py
 import sqlite3
+import commands.videoAudio as videoAudio #videoAudio.py
 
 load_dotenv()
 
@@ -46,7 +47,7 @@ async def recordUserStatus():
 
 @bot.command()
 async def stop(ctx):
-    await botCommands.stop(ctx, bot)
+    await videoAudio.stop(ctx, bot)
 
 #enables custom help command
 bot.remove_command("help")
@@ -56,7 +57,7 @@ async def help(ctx):
 
 @bot.command() #plays sound or youtube link
 async def play(ctx, *arg):
-    await botCommands.play(ctx, *arg)
+    await videoAudio.play(ctx, *arg)
 
 @bot.command() #detects a given link TODO: allow for image uploads
 async def detect(ctx, arg):
@@ -71,7 +72,7 @@ async def mock(ctx):
     await botCommands.mock(ctx)
 
 @bot.command()
-async def generate(ctx, *, arg):
+async def generate(ctx, *arg):
     await botCommands.generate(ctx,arg)
 
 @bot.command()
