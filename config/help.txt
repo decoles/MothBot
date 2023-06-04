@@ -1,0 +1,13 @@
+```detection:
+    .detect <image link> - identifies object in image
+
+Audio:
+    .play <youtube link> - play sound
+    .stop - stop playing current video 
+    .help - list all commands
+    ping - ping available servers
+    
+Other:
+    .help - list all commands
+    .ping - ping available servers
+```

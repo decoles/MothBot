@@ -54,10 +54,6 @@ bot.remove_command("help")
 async def help(ctx):
     await botCommands.help(ctx)
 
-@bot.command()
-async def sounds(ctx):
-    await botCommands.sounds(ctx)
-
 @bot.command() #plays sound or youtube link
 async def play(ctx, *arg):
     await botCommands.play(ctx, *arg)

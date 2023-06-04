@@ -29,7 +29,8 @@ async def stop(ctx, bot):
     
 #enables custom help command
 async def help(ctx):
-    await ctx.send("```detection:\n .detect <link> - identifies object in image\nsounds:\n .sounds - list all sounds\n .play <sound> - play sound\n .stop - stop playing sound\n\nother:\n .help - list all commands\n .ping - ping available servers!```")
+    with open("config/help.txt", "r") as f:
+        await ctx.send(f.read())
 
 async def play(ctx, *arg):
     if arg.__len__() == 0 or arg.__len__() > 1: #allows for some modularity
