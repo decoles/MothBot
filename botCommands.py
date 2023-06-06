@@ -42,7 +42,7 @@ async def mock(ctx):
 
 #generates and image using the craiyon api and sends it to the chat
 async def generate(ctx, *, prompt: str):
-    await ctx.send("Generating images...")
+    await ctx.send(f"Generating prompt \"{prompt}\"...")
     generator = Craiyon() # Instantiates the api wrapper
     result = await generator.async_generate(prompt)
     b64_list = await craiyon_utils.async_encode_base64(result.images)    
