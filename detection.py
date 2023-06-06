@@ -7,9 +7,9 @@ import os
 import discord
 from discord.ext import commands
 
-async def detect(ctx, arg):
-    if arg == None:
-        await ctx.send("Please provide a link to an image")
+async def detect(ctx, *arg):
+    if arg.__len__() != 1:
+        await ctx.send("Please provide one link to an image")
         return
     try: #If file cant be found or not a valid link then it will throw an error
         img_url = tf.keras.utils.get_file(None,arg)

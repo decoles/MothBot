@@ -7,9 +7,8 @@ import random
 import os
 from dotenv import load_dotenv
 import asyncio
-import yt_dlp
 from mcstatus import JavaServer
-from craiyon import Craiyon
+from craiyon import Craiyon, craiyon_utils
 import time
 from io import BytesIO
 from PIL import Image
@@ -42,26 +41,18 @@ async def mock(ctx):
     await channel.send(content)
 
 #generates and image using the craiyon api and sends it to the chat
-async def generate(ctx, *arg):
-    if arg.__len__ == 0:
-        await ctx.send("Please provide a link to an image")
-        return
-    elif arg.__len__() > 1:
-        await ctx.send("Please provide only one argument")
-        return
-    await ctx.send("Generating image... ETA: 50 seconds")
+async def generate(ctx, *, prompt: str):
+    await ctx.send("Generating images...")
     generator = Craiyon() # Instantiates the api wrapper
-    result = await generator.async_generate(arg)
-    count = 0
-    for i in result.images:
-        count += 1 #incremnts image name
-        byt = BytesIO()
-        image = Image.open(BytesIO(base64.decodebytes(i.encode("utf-8"))))
-        image.save(byt, 'PNG')
-        byt.seek(0)
-        await ctx.send(file=discord.File(fp=byt, filename=f"Image_{count +1}.png"))
-
-    #await result.async_save_images()
+    result = await generator.async_generate(prompt)
+    b64_list = await craiyon_utils.async_encode_base64(result.images)    
+    images1 = []
+    for index, image in enumerate(b64_list): # Loop through b64_list, keeping track of the index
+        img_bytes = BytesIO(base64.b64decode(image)) # Decode the image and store it as a bytes object
+        image = discord.File(img_bytes)
+        image.filename = f"result{index}.webp"
+        images1.append(image) # Add the image to the images1 list 
+    await ctx.reply(files=images1) # Reply to the user with all 9 images in 1 message
     
 async def games(ctx, bot, *arg):
     print(arg.__len__())

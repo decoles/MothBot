@@ -60,8 +60,8 @@ async def play(ctx, *arg):
     await videoAudio.play(ctx, *arg)
 
 @bot.command() #detects a given link TODO: allow for image uploads
-async def detect(ctx, arg):
-    await detection.detect(ctx, arg)
+async def detect(ctx, *arg):
+    await detection.detect(ctx, *arg)
 
 @bot.command() #pings given servers
 async def ping(ctx):
@@ -72,8 +72,8 @@ async def mock(ctx):
     await botCommands.mock(ctx)
 
 @bot.command()
-async def generate(ctx, *arg):
-    await botCommands.generate(ctx,arg)
+async def generate(ctx, *, prompt: str):
+    await botCommands.generate(ctx, prompt=prompt)
 
 @bot.command()
 async def games(ctx, *arg):
