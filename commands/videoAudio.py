@@ -32,9 +32,16 @@ async def stop(ctx, bot):
     except:
         await ctx.send("Nothing is playing")
 
-async def play(ctx, *, prompt: str):
-    if (prompt.startswith("https://www.youtube.com/watch?v=") or prompt.startswith("https://youtu.be") or prompt.startswith("https://m.youtube.com")):
+async def play(ctx, *, prompt: str, bot):
+    if (prompt.startswith("https://www.youtube.com/watch?v=")
+        or prompt.startswith("https://youtu.be")
+        or prompt.startswith("https://m.youtube.com")):
+        if ctx.voice_client and ctx.author.voice and ctx.voice_client.channel == ctx.author.voice.channel:
+            await ctx.send("Adding to queue...")
+            queue.append(prompt)
+            return
         if(ctx.author.voice): #if user is in voice channel
+            # if not(ctx.voice_client): #if bot is not in voice channel
             channel = ctx.message.author.voice.channel #get Message Sender Channel. When you want it to join without a seperat function.
             voice = await channel.connect(reconnect=True)
             url = prompt #gets video url
@@ -45,11 +52,17 @@ async def play(ctx, *, prompt: str):
             ctx.voice_client.play(discord.FFmpegOpusAudio(song_info["url"], **ffmpeg_options)) #play audio
             while voice.is_playing():
                 await asyncio.sleep(1) #wait for sound to finish
-            await ctx.voice_client.disconnect() #Go to server then go to voice client and remove it
+            await playNext(ctx, bot)
         else:
             await ctx.send("Not in voice channel")
     else:
         await ctx.send("Please enter a valid youtube link")
         
-async def addToQueue():
-    pass
+async def playNext(ctx, bot):
+    if(len(queue) > 0):
+        await ctx.send("Playing next song in queue")
+        await play(ctx, prompt=queue.pop(0), bot=bot)
+    else:
+        await ctx.send("Queue is empty")
+        await ctx.voice_client.disconnect() #Go to server then go to voice client and remove it
+        

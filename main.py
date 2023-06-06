@@ -56,11 +56,11 @@ async def help(ctx):
     await botCommands.help(ctx)
 
 @bot.command() #plays sound or youtube link
-async def play(ctx, *, prompt: str = None):
+async def play(ctx, *, prompt: str = None, bot = bot):
     if(prompt == None):
         await ctx.send("Please enter a youtube link")
         return
-    await videoAudio.play(ctx, prompt=prompt)
+    await videoAudio.play(ctx, prompt=prompt, bot=bot)
 
 @bot.command() #detects a given link TODO: allow for image uploads
 async def detect(ctx, *arg):
