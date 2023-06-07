@@ -62,6 +62,22 @@ async def play(ctx, *, prompt: str = None, bot = bot):
         return
     await videoAudio.play(ctx, prompt=prompt, bot=bot)
 
+@bot.command() 
+async def queue(ctx):
+    await videoAudio.viewQueue(ctx)
+
+@bot.command() 
+async def skip(ctx):
+    await videoAudio.skip(ctx, bot)
+
+@bot.command()
+async def pause(ctx):
+    await videoAudio.pause(ctx, bot)
+
+@bot.command()
+async def resume(ctx):
+    await videoAudio.resume(ctx, bot)
+
 @bot.command() #detects a given link TODO: allow for image uploads
 async def detect(ctx, *arg):
     await detection.detect(ctx, *arg)
@@ -84,5 +100,7 @@ async def generate(ctx, *, prompt: str = None):
 @bot.command()
 async def games(ctx, *arg):
     await botCommands.games(ctx, bot, *arg)
+
+
 
 bot.run(TOKEN)
