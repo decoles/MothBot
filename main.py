@@ -101,6 +101,10 @@ async def generate(ctx, *, prompt: str = None):
 async def games(ctx, *arg):
     await botCommands.games(ctx, bot, *arg)
 
-
-
+@bot.command()
+async def button(ctx):
+    view = discord.ui.View()
+    button = discord.ui.Button(label="Click me!", style=discord.ButtonStyle.green)
+    view.add_item(button)
+    await ctx.send(view=view)
 bot.run(TOKEN)
