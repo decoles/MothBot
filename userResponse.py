@@ -5,8 +5,8 @@ import random
 import os
 from dotenv import load_dotenv
 import asyncio
-import botCommands #commands.py
-import detection #detection.py
+import commands.botCommands as botCommands #commands.py
+import commands.detection as detection #detection.py
 import userResponse #userResponses.py
 
 async def ReadMessage(message, bot):

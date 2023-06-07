@@ -12,7 +12,7 @@ from craiyon import Craiyon, craiyon_utils
 import time
 from io import BytesIO
 from PIL import Image
-import trackstats
+import stats.trackstats as trackstats
 
 load_dotenv()
 

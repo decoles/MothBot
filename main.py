@@ -5,10 +5,10 @@ from discord.ext import tasks
 import os
 from dotenv import load_dotenv
 import asyncio
-import botCommands #commands.py
-import detection #detection.py
+import commands.botCommands as botCommands #commands.py
+import commands.detection as detection #detection.py
 import userResponse #userResponses.py
-import trackstats #trackstats.py
+import stats.trackstats as trackstats #trackstats.py
 import sqlite3
 import commands.videoAudio as videoAudio #videoAudio.py
 

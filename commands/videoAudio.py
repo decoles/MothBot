@@ -16,9 +16,6 @@ from PIL import Image
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
-#add a pause command
-#add a resume command
-
 queue = []
 
 async def scrapeVideoData(url):
