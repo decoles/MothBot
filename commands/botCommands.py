@@ -8,10 +8,8 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from mcstatus import JavaServer
-from craiyon import Craiyon, craiyon_utils
 import time
 from io import BytesIO
-from PIL import Image
 import stats.trackstats as trackstats
 
 load_dotenv()
@@ -39,21 +37,7 @@ async def mock(ctx):
         if i % 2 == 0:
             content = content[:i] + content[i].upper() + content[i+1:]
     await channel.send(content)
-
-#generates and image using the craiyon api and sends it to the chat
-async def generate(ctx, *, prompt: str):
-    await ctx.send(f"Generating prompt \"{prompt}\"...")
-    generator = Craiyon() # Instantiates the api wrapper
-    result = await generator.async_generate(prompt)
-    b64_list = await craiyon_utils.async_encode_base64(result.images)    
-    images1 = []
-    for index, image in enumerate(b64_list): # Loop through b64_list, keeping track of the index
-        img_bytes = BytesIO(base64.b64decode(image)) # Decode the image and store it as a bytes object
-        image = discord.File(img_bytes)
-        image.filename = f"result{index}.webp"
-        images1.append(image) # Add the image to the images1 list 
-    await ctx.reply(files=images1) # Reply to the user with all 9 images in 1 message
-    
+ 
 async def games(ctx, bot, *arg):
     print(arg.__len__())
     if arg.__len__() == 0:

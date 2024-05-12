@@ -9,10 +9,8 @@ from dotenv import load_dotenv
 import asyncio
 import yt_dlp
 from mcstatus import JavaServer
-from craiyon import Craiyon
 import time
 from io import BytesIO
-from PIL import Image
 from selenium import webdriver
 from bs4 import BeautifulSoup
 

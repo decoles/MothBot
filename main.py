@@ -6,7 +6,6 @@ import os
 from dotenv import load_dotenv
 import asyncio
 import commands.botCommands as botCommands #commands.py
-import commands.detection as detection #detection.py
 import userResponse #userResponses.py
 import stats.trackstats as trackstats #trackstats.py
 import sqlite3
